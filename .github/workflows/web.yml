@@ -19,4 +19,4 @@ jobs:
           VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./translation_game  # Adjust according to your build output directory
+          publish_dir: ./  # Adjust according to your build output directory
