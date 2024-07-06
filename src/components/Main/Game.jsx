@@ -86,6 +86,9 @@ const Game = ({ onLogo }) => {
         <p ref={divRef} style={{ cursor: "pointer" }}>
           LinguaGhost
         </p>
+        <img src={assets.game_logo} alt="" />
+      </div>
+      <div className="main-container">
         <div className="language-toggle">
           <span id="languageLabel">English</span>
           <label className="switch">
@@ -101,9 +104,6 @@ const Game = ({ onLogo }) => {
           </label>
           <span id="languageLabel">한글</span>
         </div>
-        <img src={assets.game_logo} alt="" />
-      </div>
-      <div className="main-container">
         {showResult ? (
           <div className="result">
             <div className="result-data">

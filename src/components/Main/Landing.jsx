@@ -33,6 +33,9 @@ function Landing({ onPlay }) {
     <div className="main">
       <div className="nav">
         <p>LinguaGhost</p>
+        <img src={assets.game_logo} alt="" />
+      </div>
+      <div className="main-container">
         <div className="language-toggle">
           <span id="languageLabel">English</span>
           <label className="switch">
@@ -48,10 +51,6 @@ function Landing({ onPlay }) {
           </label>
           <span id="languageLabel">한글</span>
         </div>
-
-        <img src={assets.game_logo} alt="" />
-      </div>
-      <div className="main-container">
         <div className="greet">
           <p>
             <span>
