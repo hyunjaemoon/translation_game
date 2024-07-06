@@ -1,0 +1,202 @@
+import React, { useContext, useRef, useEffect } from "react";
+import "./Main.css";
+import { assets } from "../../assets/assets";
+import { Context } from "../../context/Context";
+import { TypeAnimation } from "react-type-animation";
+
+const renderQuestions = (questions, answers, setAnswers) => {
+  return questions && questions.questions
+    ? questions.questions.map((question, index) => (
+        <>
+          <div
+            className="card"
+            key={`card-${index}`}
+            onClick={() => {
+              const userInput = prompt("Enter your translation:");
+              if (userInput === null) return;
+              answers[index] = userInput;
+              setAnswers([...answers]);
+            }}
+          >
+            <p>{question}</p>
+            <br></br>
+            <p>{answers[index]}</p>
+            <img src={assets.bulb_icon} alt="" />
+          </div>
+          <br />
+        </> // Add vertical spacing here
+      ))
+    : null;
+};
+
+const Game = ({ onLogo }) => {
+  const {
+    showResult,
+    setShowResult,
+    loading,
+    resultData,
+    setIsKorean,
+    isKorean,
+    languageFrom,
+    languageTo,
+    questions,
+    setQuestions,
+    answers,
+    setAnswers,
+    gemini,
+    onTranslationEvaluation,
+  } = useContext(Context);
+
+  const divRef = useRef(null);
+
+  useEffect(() => {
+    const divElement = divRef.current;
+    divElement.addEventListener("click", onLogo);
+
+    const fetchData = async () => {
+      try {
+        const response = await gemini.obtainQuestions(languageFrom);
+        setQuestions(response);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+
+    // Cleanup function to remove the event listener
+    return () => {
+      divElement.removeEventListener("click", onLogo);
+      setQuestions({});
+      setAnswers(["", "", "", "", ""]);
+      setShowResult(false);
+    };
+  }, []);
+
+  const calculateScore = () => {
+    let score = 0;
+    resultData.evaluation.forEach((item) => {
+      score += item.score;
+    });
+    return score;
+  };
+
+  return (
+    <div className="main">
+      <div className="nav">
+        <p ref={divRef} style={{ cursor: "pointer" }}>
+          LinguaGhost
+        </p>
+        <div className="language-toggle">
+          <span id="languageLabel">English</span>
+          <label className="switch">
+            <input
+              type="checkbox"
+              id="languageSwitch"
+              checked={isKorean}
+              onChange={(e) => {
+                setIsKorean(e.target.checked);
+              }}
+            />
+            <span className="slider round"></span>
+          </label>
+          <span id="languageLabel">한글</span>
+        </div>
+        <img src={assets.game_logo} alt="" />
+      </div>
+      <div className="main-container">
+        {showResult ? (
+          <div className="result">
+            <div className="result-data">
+              {loading ? (
+                <div className="loader-div">
+                  <div className="loader"></div>
+                </div>
+              ) : (
+                <>
+                  <div className="translation-evaluation">
+                    <TypeAnimation
+                      sequence={[
+                        `
+                          ${
+                            isKorean ? "총 점수" : "Total Score"
+                          }: ${calculateScore()} / 500
+                          `,
+                      ]}
+                      wrapper="span"
+                      style={{ fontSize: "25px" }}
+                      speed={50}
+                      repeat={0}
+                    />
+                    <br />
+                    <br />
+                    {resultData.evaluation.map((item, index) => (
+                      <>
+                        <div key={index}>
+                          <p>
+                            {isKorean ? "질문" : "Question"}:{" "}
+                            {questions.questions[index]}
+                          </p>
+                          <p>
+                            {isKorean ? "유저 답변" : "User Input"}:{" "}
+                            {answers[index]}
+                          </p>
+                          <p>
+                            {isKorean ? "점수" : "Score"}: {item.score}
+                          </p>
+                          <p>
+                            {isKorean ? "평가" : "Evaluation Description"}:{" "}
+                            {item.description}
+                          </p>
+                        </div>
+                        <br />
+                      </>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="greet">
+              <p>
+                <span>
+                  {isKorean ? "번역하려면 클릭하세요!" : "Click to translate!"}
+                </span>
+              </p>
+            </div>
+            {renderQuestions(questions, answers, setAnswers)}
+            {questions && questions.questions ? (
+              <div className="play-button-div">
+                <button
+                  className="play-button"
+                  onClick={() =>
+                    onTranslationEvaluation(
+                      languageFrom,
+                      languageTo,
+                      questions,
+                      answers
+                    )
+                  }
+                >
+                  {isKorean ? "제출" : "Submit"}
+                </button>
+              </div>
+            ) : (
+              <div className="loader-div">
+                <div className="loader"></div>
+              </div>
+            )}
+          </>
+        )}
+        <div className="main-bottom">
+          <p className="bottom-info">
+            Translation game is powered by Gemini, a Google AI language model.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Game;

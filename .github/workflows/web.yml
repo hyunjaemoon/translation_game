@@ -1,22 +1,25 @@
 name: Deploy to GitHub Pages
+    on:
+      push:
+        branches:
+          - main
+    jobs:
+      build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout
+          uses: actions/checkout@v1
 
-on:
-  push:
-    branches:
-      - main  # Change this if your default branch is different
+        - name: Build
+          run: |
+            npm install
+            npm run build
+          env:
+            VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        env:
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./  # Adjust according to your build output directory
+        - name: Deploy
+          uses: JamesIves/github-pages-deploy-action@releases/v3
+          with:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_KEY }}
+            BRANCH: gh-pages
+            FOLDER: dist
