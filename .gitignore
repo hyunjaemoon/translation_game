@@ -25,3 +25,6 @@ yarn-error.log
 # VSCode settings
 .vscode/
 .idx/
+
+# Other files
+credentials.json
