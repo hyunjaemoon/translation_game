@@ -11,6 +11,8 @@ function Landing({ onPlay }) {
     languageFrom,
     setLanguageTo,
     languageTo,
+    numQuestions,
+    setNumQuestions,
   } = useContext(Context);
 
   const handleLanguageFromChange = (e) => {
@@ -102,6 +104,20 @@ function Landing({ onPlay }) {
               <option value="it">Italian</option>
               <option value="pt">Portuguese</option>
               <option value="ru">Russian</option>
+            </select>
+          </div>
+          <div className="select-box">
+            <label htmlFor="num-questions">
+              {isKorean ? "문제 수:" : "Number of questions:"}
+            </label>
+            <select
+              id="num-questions"
+              onChange={(e) => setNumQuestions(e.target.value)}
+              value={numQuestions}
+            >
+              <option value="1">1</option>
+              <option value="3">3</option>
+              <option value="5">5</option>
             </select>
           </div>
         </div>

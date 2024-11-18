@@ -14,14 +14,15 @@ const ContextProvider = (props) => {
   const [languageFrom, setLanguageFrom] = useState("en");
   const [languageTo, setLanguageTo] = useState("ko");
   const [questions, setQuestions] = useState({});
-  const [answers, setAnswers] = useState(["", "", "", "", ""]);
+  const [answers, setAnswers] = useState([""]);
   const [gemini, setGemini] = useState(new Gemini());
+  const [numQuestions, setNumQuestions] = useState(1);
 
-  const onTranslationEvaluation = async (languageFrom, languageTo, questions, answers) => {
+  const onTranslationEvaluation = async (languageFrom, languageTo, questions, answers, numQuestions) => {
     setResultData({});
     setLoading(true);
     setShowResult(true);
-    let response = await gemini.evaluateChat(languageFrom, languageTo, questions, answers);
+    let response = await gemini.evaluateChat(languageFrom, languageTo, questions, answers, numQuestions);
     setResultData(response);
     setLoading(false);
   };
@@ -56,6 +57,8 @@ const ContextProvider = (props) => {
     gemini,
     setGemini,
     onTranslationEvaluation,
+    numQuestions,
+    setNumQuestions,
   };
 
   return (

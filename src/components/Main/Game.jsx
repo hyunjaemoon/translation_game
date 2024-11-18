@@ -45,6 +45,7 @@ const Game = ({ onLogo }) => {
     setAnswers,
     gemini,
     onTranslationEvaluation,
+    numQuestions,
   } = useContext(Context);
 
   const divRef = useRef(null);
@@ -55,7 +56,10 @@ const Game = ({ onLogo }) => {
 
     const fetchData = async () => {
       try {
-        const response = await gemini.obtainQuestions(languageFrom);
+        const response = await gemini.obtainQuestions(
+          languageFrom,
+          numQuestions
+        );
         setQuestions(response);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -67,7 +71,7 @@ const Game = ({ onLogo }) => {
     return () => {
       divElement.removeEventListener("click", onLogo);
       setQuestions({});
-      setAnswers(["", "", "", "", ""]);
+      setAnswers(Array(numQuestions).fill(""));
       setShowResult(false);
     };
   }, []);
@@ -119,7 +123,7 @@ const Game = ({ onLogo }) => {
                         `
                           ${
                             isKorean ? "총 점수" : "Total Score"
-                          }: ${calculateScore()} / 500
+                          }: ${calculateScore()} / ${numQuestions * 100}
                           `,
                       ]}
                       wrapper="span"
@@ -175,7 +179,8 @@ const Game = ({ onLogo }) => {
                       languageFrom,
                       languageTo,
                       questions,
-                      answers
+                      answers,
+                      numQuestions
                     )
                   }
                 >

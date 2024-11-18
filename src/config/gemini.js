@@ -48,7 +48,7 @@ class Gemini {
     });
   }
 
-  async obtainQuestions(languageFrom) {
+  async obtainQuestions(languageFrom, numQuestions) {
     const languageFromOptions = {
       en: "English",
       ko: "Korean",
@@ -67,7 +67,7 @@ class Gemini {
     // Use selectOptions wherever you need the HTML options
 
     const result = await this.obtainQuestionsChat.sendMessage(`
-      Construct 5 complete ${languageFrom} sentences for translation questions.
+      Construct ${numQuestions} complete ${languageFrom} sentences for translation questions.
       Make it a moderate difficulty.
       The response MUST be in JSON format with the following structure:
       { 
@@ -89,9 +89,19 @@ class Gemini {
     }
   }
 
-  async evaluateChat(languageFrom, languageTo, questions, answers) {
+  async evaluateChat(
+    languageFrom,
+    languageTo,
+    questions,
+    answers,
+    numQuestions
+  ) {
     if (
-      !(questions && questions.questions && questions.questions.length === 5)
+      !(
+        questions &&
+        questions.questions &&
+        questions.questions.length == numQuestions
+      )
     ) {
       alert("Invalid questions object");
       return {};
@@ -113,19 +123,21 @@ class Gemini {
     languageFrom = languageOptions[languageFrom];
     languageTo = languageOptions[languageTo];
 
-    const result = await this.evaluationChat.sendMessage(`
+    const inputArray = [];
+    for (let i = 0; i < numQuestions; i++) {
+      inputArray.push({
+        question: `${questions.questions[i]}`,
+        user_input: `${answers[i]}`,
+      });
+    }
+
+    let message = `
       Consider yourself as a translation video game where you score how well the user 
-      translated the given 5 ${languageFrom} sentences into 5 ${languageTo} sentences. 
+      translated the given ${numQuestions} ${languageFrom} sentences into ${numQuestions} ${languageTo} sentences. 
       Give me a proper game-like response. The game-like response should be concise in 
       a single sentence. Here are the set of questions and user inputs:
       {
-        'input': [
-          { 'question': '${questions.questions[0]}', 'user_input': '${answers[0]}' },
-          { 'question': '${questions.questions[1]}', 'user_input': '${answers[1]}' },
-          { 'question': '${questions.questions[2]}', 'user_input': '${answers[2]}' },
-          { 'question': '${questions.questions[3]}', 'user_input': '${answers[3]}' },
-          { 'question': '${questions.questions[4]}', 'user_input': '${answers[4]}' }
-        ]
+        'input': ${JSON.stringify(inputArray)}
       }
 
       MUST provide a score from 1 to 100. Return the score and description 
@@ -134,14 +146,14 @@ class Gemini {
       following structure in respective order as input:
       { 
         "evaluation": [
-          { "score": int, "description": str },
-          { "score": int, "description": str },
-          { "score": int, "description": str },
-          { "score": int, "description": str },
-          { "score": int, "description": str }       
+          ${Array.from(
+            { length: numQuestions },
+            () => "{score: int, description: str}"
+          ).join(", ")}
         ]
       }
-    `);
+    `;
+    const result = await this.evaluationChat.sendMessage(message);
     const response = result.response;
     try {
       const evaluationResult = JSON.parse(
