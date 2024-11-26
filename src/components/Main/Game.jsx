@@ -12,7 +12,9 @@ const renderQuestions = (questions, answers, setAnswers) => {
             className="card"
             key={`card-${index}`}
             onClick={() => {
-              const userInput = prompt("Enter your translation:");
+              const userInput = prompt(
+                `Enter your translation for\n\n${question}`
+              );
               if (userInput === null) return;
               answers[index] = userInput;
               setAnswers([...answers]);
