@@ -31,6 +31,20 @@ function Landing({ onPlay }) {
     setLanguageTo(selectedValue);
   };
 
+  const languagesOptions = [
+    <option value="en">English</option>,
+    <option value="ko">Korean</option>,
+    <option value="zh">Chinese</option>,
+    <option value="ja">Japanese</option>,
+    <option value="hi">Hindi</option>,
+    <option value="es">Spanish</option>,
+    <option value="fr">French</option>,
+    <option value="de">German</option>,
+    <option value="it">Italian</option>,
+    <option value="pt">Portuguese</option>,
+    <option value="ru">Russian</option>,
+  ]
+
   return (
     <div className="main">
       <div className="nav">
@@ -73,16 +87,7 @@ function Landing({ onPlay }) {
               onChange={handleLanguageFromChange}
               value={languageFrom}
             >
-              <option value="en">English</option>
-              <option value="ko">Korean</option>
-              <option value="zh">Chinese</option>
-              <option value="ja">Japanese</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-              <option value="it">Italian</option>
-              <option value="pt">Portuguese</option>
-              <option value="ru">Russian</option>
+              {languagesOptions}
             </select>
           </div>
           <div className="select-box">
@@ -94,16 +99,7 @@ function Landing({ onPlay }) {
               onChange={handleLanguageToChange}
               value={languageTo}
             >
-              <option value="en">English</option>
-              <option value="ko">Korean</option>
-              <option value="zh">Chinese</option>
-              <option value="ja">Japanese</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
-              <option value="de">German</option>
-              <option value="it">Italian</option>
-              <option value="pt">Portuguese</option>
-              <option value="ru">Russian</option>
+              {languagesOptions}
             </select>
           </div>
           <div className="select-box">

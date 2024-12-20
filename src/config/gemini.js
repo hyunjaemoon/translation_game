@@ -34,6 +34,20 @@ const SAFETY_SETTINGS = [
   },
 ];
 
+const LANGUAGE_OPTIONS = {
+  en: "English",
+  ko: "Korean",
+  zh: "Chinese",
+  ja: "Japanese",
+  hi: "Hindi",
+  es: "Spanish",
+  fr: "French",
+  de: "German",
+  it: "Italian",
+  pt: "Portuguese",
+  ru: "Russian",
+};
+
 class Gemini {
   constructor() {
     this.genAI = new GoogleGenerativeAI(API_KEY);
@@ -49,22 +63,7 @@ class Gemini {
   }
 
   async obtainQuestions(languageFrom, numQuestions) {
-    const languageFromOptions = {
-      en: "English",
-      ko: "Korean",
-      zh: "Chinese",
-      ja: "Japanese",
-      es: "Spanish",
-      fr: "French",
-      de: "German",
-      it: "Italian",
-      pt: "Portuguese",
-      ru: "Russian",
-    };
-
-    languageFrom = languageFromOptions[languageFrom];
-
-    // Use selectOptions wherever you need the HTML options
+    languageFrom = LANGUAGE_OPTIONS[languageFrom];
 
     const result = await this.obtainQuestionsChat.sendMessage(`
       Construct ${numQuestions} complete ${languageFrom} sentences for translation questions.
@@ -107,21 +106,8 @@ class Gemini {
       return {};
     }
 
-    const languageOptions = {
-      en: "English",
-      ko: "Korean",
-      zh: "Chinese",
-      ja: "Japanese",
-      es: "Spanish",
-      fr: "French",
-      de: "German",
-      it: "Italian",
-      pt: "Portuguese",
-      ru: "Russian",
-    };
-
-    languageFrom = languageOptions[languageFrom];
-    languageTo = languageOptions[languageTo];
+    languageFrom = LANGUAGE_OPTIONS[languageFrom];
+    languageTo = LANGUAGE_OPTIONS[languageTo];
 
     const inputArray = [];
     for (let i = 0; i < numQuestions; i++) {
@@ -147,9 +133,9 @@ class Gemini {
       { 
         "evaluation": [
           ${Array.from(
-            { length: numQuestions },
-            () => "{score: int, description: str}"
-          ).join(", ")}
+      { length: numQuestions },
+      () => "{score: int, description: str}"
+    ).join(", ")}
         ]
       }
     `;

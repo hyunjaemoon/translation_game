@@ -7,27 +7,28 @@ import { TypeAnimation } from "react-type-animation";
 const renderQuestions = (questions, answers, setAnswers) => {
   return questions && questions.questions
     ? questions.questions.map((question, index) => (
-        <>
-          <div
-            className="card"
-            key={`card-${index}`}
-            onClick={() => {
-              const userInput = prompt(
-                `Enter your translation for\n\n${question}`
-              );
-              if (userInput === null) return;
-              answers[index] = userInput;
-              setAnswers([...answers]);
-            }}
-          >
-            <p>{question}</p>
-            <br></br>
-            <p>{answers[index]}</p>
-            <img src={assets.bulb_icon} alt="" />
-          </div>
-          <br />
-        </> // Add vertical spacing here
-      ))
+      <>
+        <div
+          className="card"
+          key={`card-${index}`}
+          onClick={() => {
+            const userInput = prompt(
+              `Enter your translation for\n\n${question}`,
+              answers[index]
+            );
+            if (userInput === null) return;
+            answers[index] = userInput;
+            setAnswers([...answers]);
+          }}
+        >
+          <p>{question}</p>
+          <br></br>
+          <p>{answers[index]}</p>
+          <img src={assets.bulb_icon} alt="" />
+        </div>
+        <br />
+      </> // Add vertical spacing here
+    ))
     : null;
 };
 
@@ -123,9 +124,8 @@ const Game = ({ onLogo }) => {
                     <TypeAnimation
                       sequence={[
                         `
-                          ${
-                            isKorean ? "총 점수" : "Total Score"
-                          }: ${calculateScore()} / ${numQuestions * 100}
+                          ${isKorean ? "총 점수" : "Total Score"
+                        }: ${calculateScore()} / ${numQuestions * 100}
                           `,
                       ]}
                       wrapper="span"
