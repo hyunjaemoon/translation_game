@@ -185,17 +185,26 @@
   display: flex;
   justify-content: space-around;
   margin: 20px 0;
-  padding: 10px;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .select-box {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  margin: 10px;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  justify-content: space-between;
 }
 
 label {
@@ -225,8 +234,8 @@ select:focus {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 46px;
+  height: 24px;
 }
 
 .switch input {
@@ -250,10 +259,10 @@ select:focus {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
   background-color: white;
   transition: 0.4s;
   border-radius: 50%;
@@ -264,13 +273,14 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(22px);
 }
 
 .language-toggle {
   display: flex;
   align-items: center;
-  gap: 10px; /* Adjust the spacing as needed */
+  gap: 8px;
+  font-size: 0.9rem;
 }
 
 .play-button-div {

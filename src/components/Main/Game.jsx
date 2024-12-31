@@ -49,6 +49,7 @@ const Game = ({ onLogo }) => {
     gemini,
     onTranslationEvaluation,
     numQuestions,
+    difficulty,
   } = useContext(Context);
 
   const divRef = useRef(null);
@@ -61,7 +62,8 @@ const Game = ({ onLogo }) => {
       try {
         const response = await gemini.obtainQuestions(
           languageFrom,
-          numQuestions
+          numQuestions,
+          difficulty
         );
         setQuestions(response);
       } catch (error) {
@@ -90,7 +92,7 @@ const Game = ({ onLogo }) => {
   return (
     <div className="main">
       <div className="nav">
-        <p ref={divRef} style={{ cursor: "pointer" }}>
+        <p id="logo" ref={divRef} style={{ cursor: "pointer" }}>
           LinguaGhost
         </p>
         <img src={assets.game_logo} alt="" />

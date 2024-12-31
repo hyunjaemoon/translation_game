@@ -17,6 +17,7 @@ const ContextProvider = (props) => {
   const [answers, setAnswers] = useState([""]);
   const [gemini, setGemini] = useState(new Gemini());
   const [numQuestions, setNumQuestions] = useState(1);
+  const [difficulty, setDifficulty] = useState("Beginner");
 
   const onTranslationEvaluation = async (languageFrom, languageTo, questions, answers, numQuestions) => {
     setResultData({});
@@ -59,6 +60,8 @@ const ContextProvider = (props) => {
     onTranslationEvaluation,
     numQuestions,
     setNumQuestions,
+    difficulty,
+    setDifficulty,
   };
 
   return (

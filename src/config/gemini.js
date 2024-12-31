@@ -62,12 +62,12 @@ class Gemini {
     });
   }
 
-  async obtainQuestions(languageFrom, numQuestions) {
+  async obtainQuestions(languageFrom, numQuestions, difficulty) {
     languageFrom = LANGUAGE_OPTIONS[languageFrom];
 
     const result = await this.obtainQuestionsChat.sendMessage(`
       Construct ${numQuestions} complete ${languageFrom} sentences for translation questions.
-      Make it a moderate difficulty.
+      The difficulty is ${difficulty} out of [Beginner, Intermediate, Advanced].
       The response MUST be in JSON format with the following structure:
       { 
         "questions": ["sentence 1", "sentence 2", "sentence 3", "sentence 4", "sentence 5"]
@@ -119,7 +119,7 @@ class Gemini {
 
     let message = `
       Consider yourself as a translation video game where you score how well the user 
-      translated the given ${numQuestions} ${languageFrom} sentences into ${numQuestions} ${languageTo} sentences. 
+      translated the given ${numQuestions} ${languageFrom} sentences into ${numQuestions} ${languageTo} sentences.
       Give me a proper game-like response. The game-like response should be concise in 
       a single sentence. Here are the set of questions and user inputs:
       {

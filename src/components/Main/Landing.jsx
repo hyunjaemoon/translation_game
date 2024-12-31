@@ -13,6 +13,8 @@ function Landing({ onPlay }) {
     languageTo,
     numQuestions,
     setNumQuestions,
+    setDifficulty,
+    difficulty,
   } = useContext(Context);
 
   const handleLanguageFromChange = (e) => {
@@ -48,7 +50,7 @@ function Landing({ onPlay }) {
   return (
     <div className="main">
       <div className="nav">
-        <p>LinguaGhost</p>
+        <p id="logo">LinguaGhost</p>
         <img src={assets.game_logo} alt="" />
       </div>
       <div className="main-container">
@@ -114,6 +116,16 @@ function Landing({ onPlay }) {
               <option value="1">1</option>
               <option value="3">3</option>
               <option value="5">5</option>
+            </select>
+          </div>
+          <div className="select-box">
+            <label htmlFor="difficulty">
+              {isKorean ? "난이도:" : "Difficulty:"}
+            </label>
+            <select id="difficulty" onChange={(e) => setDifficulty(e.target.value)} value={difficulty}>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
             </select>
           </div>
         </div>
