@@ -33,19 +33,33 @@ function Landing({ onPlay }) {
     setLanguageTo(selectedValue);
   };
 
-  const languagesOptions = [
-    <option value="en">English</option>,
-    <option value="ko">Korean</option>,
-    <option value="zh">Chinese</option>,
-    <option value="ja">Japanese</option>,
-    <option value="hi">Hindi</option>,
-    <option value="es">Spanish</option>,
-    <option value="fr">French</option>,
-    <option value="de">German</option>,
-    <option value="it">Italian</option>,
-    <option value="pt">Portuguese</option>,
-    <option value="ru">Russian</option>,
-  ]
+  const languagesOptions = isKorean
+    ? [
+        <option value="ko">한글</option>,
+        <option value="en">영어</option>,
+        <option value="zh">중국어</option>,
+        <option value="ja">일본어</option>,
+        <option value="hi">힌디어</option>,
+        <option value="es">스페인어</option>,
+        <option value="fr">프랑스어</option>,
+        <option value="de">독일어</option>,
+        <option value="it">이탈리아어</option>,
+        <option value="pt">포르투갈어</option>,
+        <option value="ru">러시아어</option>,
+      ]
+    : [
+        <option value="en">English</option>,
+        <option value="ko">Korean</option>,
+        <option value="zh">Chinese</option>,
+        <option value="ja">Japanese</option>,
+        <option value="hi">Hindi</option>,
+        <option value="es">Spanish</option>,
+        <option value="fr">French</option>,
+        <option value="de">German</option>,
+        <option value="it">Italian</option>,
+        <option value="pt">Portuguese</option>,
+        <option value="ru">Russian</option>,
+      ];
 
   return (
     <div className="main">
@@ -123,9 +137,9 @@ function Landing({ onPlay }) {
               {isKorean ? "난이도:" : "Difficulty:"}
             </label>
             <select id="difficulty" onChange={(e) => setDifficulty(e.target.value)} value={difficulty}>
-              <option value="Beginner">Beginner</option>
-              <option value="Intermediate">Intermediate</option>
-              <option value="Advanced">Advanced</option>
+              <option value="Beginner">{isKorean ? "초급" : "Beginner"}</option>
+              <option value="Intermediate">{isKorean ? "중급" : "Intermediate"}</option>
+              <option value="Advanced">{isKorean ? "고급" : "Advanced"}</option>
             </select>
           </div>
         </div>
