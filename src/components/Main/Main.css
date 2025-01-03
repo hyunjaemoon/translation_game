@@ -331,3 +331,22 @@ input:checked + .slider:before {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.refresh-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.refresh-button:hover {
+  background-color: #45a049;
+}

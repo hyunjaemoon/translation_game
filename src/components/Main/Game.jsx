@@ -4,34 +4,6 @@ import { assets } from "../../assets/assets";
 import { Context } from "../../context/Context";
 import { TypeAnimation } from "react-type-animation";
 
-const renderQuestions = (questions, answers, setAnswers) => {
-  return questions && questions.questions
-    ? questions.questions.map((question, index) => (
-      <>
-        <div
-          className="card"
-          key={`card-${index}`}
-          onClick={() => {
-            const userInput = prompt(
-              `Enter your translation for\n\n${question}`,
-              answers[index]
-            );
-            if (userInput === null) return;
-            answers[index] = userInput;
-            setAnswers([...answers]);
-          }}
-        >
-          <p>{question}</p>
-          <br></br>
-          <p>{answers[index]}</p>
-          <img src={assets.bulb_icon} alt="" />
-        </div>
-        <br />
-      </> // Add vertical spacing here
-    ))
-    : null;
-};
-
 const Game = ({ onLogo }) => {
   const {
     showResult,
@@ -52,24 +24,59 @@ const Game = ({ onLogo }) => {
     difficulty,
   } = useContext(Context);
 
+  const renderQuestions = (questions, answers, setAnswers) => {
+    return questions && questions.questions
+      ? questions.questions.map((question, index) => (
+        <>
+          <div
+            className="card"
+            key={`card-${index}`}
+            onClick={() => {
+              const promptText = isKorean
+                ? `다음 문장을 번역하세요\n\n${question}`
+                : `Enter your translation for\n\n${question}`;
+              const userInput = prompt(
+                promptText,
+                answers[index]
+              );
+              if (userInput === null) return;
+              answers[index] = userInput;
+              setAnswers([...answers]);
+            }}
+          >
+            <p>{question}</p>
+            <br></br>
+            <p>{answers[index]}</p>
+            <img src={assets.bulb_icon} alt="" />
+          </div>
+          <br />
+        </> // Add vertical spacing here
+      ))
+      : null;
+  };
+
   const divRef = useRef(null);
+
+  const fetchData = async () => {
+    // Clear questions first
+    setQuestions({});
+    try {
+      const response = await gemini.obtainQuestions(
+        languageFrom,
+        numQuestions,
+        difficulty
+      );
+      setQuestions(response);
+      setAnswers(Array(numQuestions).fill(""));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   useEffect(() => {
     const divElement = divRef.current;
     divElement.addEventListener("click", onLogo);
 
-    const fetchData = async () => {
-      try {
-        const response = await gemini.obtainQuestions(
-          languageFrom,
-          numQuestions,
-          difficulty
-        );
-        setQuestions(response);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchData();
 
     // Cleanup function to remove the event listener
@@ -172,6 +179,14 @@ const Game = ({ onLogo }) => {
                   {isKorean ? "번역하려면 클릭하세요!" : "Click to translate!"}
                 </span>
               </p>
+              {questions && questions.questions && (
+                <button
+                  className="refresh-button"
+                  onClick={fetchData}
+                >
+                  {isKorean ? "새로운 문제" : "New Questions"}
+                </button>
+              )}
             </div>
             {renderQuestions(questions, answers, setAnswers)}
             {questions && questions.questions ? (
