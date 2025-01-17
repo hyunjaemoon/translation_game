@@ -105,12 +105,14 @@
       localStorage.setItem('privacyAccepted', 'true');
     }
 
+    // Disabled for now. Uncomment if you want to prevent showing the privacy notice every time
+    //
     // Check if user has already accepted privacy notice
-    window.addEventListener('load', () => {
-      if (localStorage.getItem('privacyAccepted') === 'true') {
-        document.getElementById('privacy-overlay').classList.add('hidden');
-      }
-    });
+    // window.addEventListener('load', () => {
+    //   if (localStorage.getItem('privacyAccepted') === 'true') {
+    //     document.getElementById('privacy-overlay').classList.add('hidden');
+    //   }
+    // });
   </script>
 </body>
 
