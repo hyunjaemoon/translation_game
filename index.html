@@ -1,15 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/translation_game/assets/game_logo-CXmYpAWH.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LinguaGhost</title>
-    <a href="https://hyunjaemoon.com" target="_blank" style="display: block; margin: 10px; font-size: 24px; text-decoration: none;">🌙</a>
-    <script type="module" crossorigin src="/translation_game/assets/index-QYjXg75O.js"></script>
-    <link rel="stylesheet" crossorigin href="/translation_game/assets/index-CMZw2Oa_.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/translation_game/assets/game_logo-CXmYpAWH.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinguaGhost</title>
+  <a href="https://hyunjaemoon.com" target="_blank"
+    style="display: block; margin: 10px; font-size: 24px; text-decoration: none;">🌙</a>
+  <style>
+    .privacy-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .privacy-dialog {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .privacy-dialog h2 {
+      margin-top: 0;
+    }
+
+    .privacy-dialog button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    .privacy-dialog button:hover {
+      background: #45a049;
+    }
+
+    .privacy-dialog p {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+
+    .privacy-dialog ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .privacy-dialog ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .privacy-dialog a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+
+    .privacy-dialog a:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+  <script type="module" crossorigin src="/translation_game/assets/index-QYjXg75O.js"></script>
+  <link rel="stylesheet" crossorigin href="/translation_game/assets/index-CMZw2Oa_.css">
+</head>
+
+<body>
+  <div id="privacy-overlay" class="privacy-overlay">
+    <div class="privacy-dialog">
+      <h2>Privacy Notice</h2>
+      <p>This page is powered by Google's Gemini AI model. By using this page, you acknowledge that:</p>
+      <ul>
+        <li>Your messages will be processed by Google's AI services</li>
+        <li>Messages are not stored permanently but are used in the current session</li>
+        <li>Personal information should not be shared in conversations</li>
+        <li>The AI may occasionally provide inaccurate information</li>
+      </ul>
+      <p>For more information about Gemini's data handling, please visit <a
+          href="https://support.google.com/gemini/answer/13594961?hl=en#privacy_notice" target="_blank">Gemini Apps
+          Privacy Notice</a></p>
+      <button onclick="acceptPrivacy()">I Acknowledge</button>
+    </div>
+  </div>
+  <div id="root"></div>
+  <script>
+    function acceptPrivacy() {
+      document.getElementById('privacy-overlay').classList.add('hidden');
+      localStorage.setItem('privacyAccepted', 'true');
+    }
+
+    // Check if user has already accepted privacy notice
+    window.addEventListener('load', () => {
+      if (localStorage.getItem('privacyAccepted') === 'true') {
+        document.getElementById('privacy-overlay').classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+
 </html>
